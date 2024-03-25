@@ -81,7 +81,7 @@ public class Matrix {
     }
     m[j][i] = Integer.MAX_VALUE;
     if (Objects.nonNull(visited)) {
-      visited.stream().forEach(index -> m[j][index] = Integer.MAX_VALUE);
+      visited.forEach(index -> m[j][index] = Integer.MAX_VALUE);
     }
   }
 

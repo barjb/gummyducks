@@ -19,7 +19,9 @@ public class BAB {
   }
 
   public int compute() {
+    int nodeNumber = 1;
     int startingIndex = graph.getCities().indexOf(graph.getStartingCity());
+    Node solution = null;
     Node root =
         new Node(0, -1, startingIndex, 0, new LinkedList<>(), Integer.toString(startingIndex));
     root.setBound(Integer.MAX_VALUE);
@@ -27,8 +29,6 @@ public class BAB {
     root.reduce();
     root.addItselfToVisited();
     queue.add(root);
-    int nodeNumber = 1;
-    Node solution = null;
     while (!queue.isEmpty()) {
       var current = queue.poll();
       if (current.isLeaf() && current.getCost() < root.getBound()) {

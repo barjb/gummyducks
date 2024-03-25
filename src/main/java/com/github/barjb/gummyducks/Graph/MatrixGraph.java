@@ -1,7 +1,6 @@
 package com.github.barjb.gummyducks.Graph;
 
-import com.github.barjb.gummyducks.exceptions.DataParsingException;
-
+import com.github.barjb.gummyducks.exceptions.ParsingException;
 import java.util.Arrays;
 
 public class MatrixGraph extends Graph {
@@ -11,9 +10,9 @@ public class MatrixGraph extends Graph {
   public void setNumberOfCities(int numberOfCities) {
     this.numberOfCities = numberOfCities;
     int[][] m = new int[numberOfCities][numberOfCities];
-      for (int[] ints : m) {
-          Arrays.fill(ints, Integer.MAX_VALUE);
-      }
+    for (int[] ints : m) {
+      Arrays.fill(ints, Integer.MAX_VALUE);
+    }
     this.matrix = new Matrix(m);
   }
 
@@ -22,8 +21,9 @@ public class MatrixGraph extends Graph {
     if (!cities.contains(src)) cities.add(src);
     if (!cities.contains(dst)) cities.add(dst);
 
-    if(cities.size() > numberOfCities){
-      throw new DataParsingException("Number of cities does not match parsed data");
+    if (cities.size() > numberOfCities) {
+      throw new ParsingException(
+          "Constant number of cities does not match number of parsed cities.");
     }
 
     int srcIndex = cities.indexOf(src);
@@ -37,6 +37,7 @@ public class MatrixGraph extends Graph {
   public int getWeight(String src, String dst) {
     int srcIndex = cities.indexOf(src);
     int dstIndex = cities.indexOf(dst);
+
     return matrix.get(srcIndex, dstIndex);
   }
 

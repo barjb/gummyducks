@@ -4,10 +4,10 @@ import com.github.barjb.gummyducks.Algorithms.BAB;
 import com.github.barjb.gummyducks.Graph.Graph;
 import com.github.barjb.gummyducks.Graph.MatrixGraph;
 import com.github.barjb.gummyducks.utils.Reader;
-import java.io.IOException;
 
 public class Application {
-  public static void main(String[] args) throws IOException {
+
+  public static void main(String[] args) {
     String file = "src/main/java/com/github/barjb/gummyducks/input.txt";
     Reader reader = new Reader(file);
     Graph graph = new MatrixGraph();

@@ -2,9 +2,8 @@ package com.github.barjb.gummyducks.Graph;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.github.barjb.gummyducks.exceptions.DataParsingException;
+import com.github.barjb.gummyducks.exceptions.ParsingException;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class MatrixGraphTest {
@@ -47,7 +46,7 @@ class MatrixGraphTest {
     graph.setNumberOfCities(2);
     graph.setCities(cities);
     assertThrows(
-        DataParsingException.class,
+        ParsingException.class,
         () -> {
           graph.addEdge("A", "C", 1);
         });

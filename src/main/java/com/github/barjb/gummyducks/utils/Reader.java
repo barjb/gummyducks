@@ -10,11 +10,14 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Reader {
   private final String file;
   private String[] header;
   private String[] lines;
+  private static final Logger logger = LogManager.getLogger(Reader.class);
 
   public Reader(String file) {
     this.file = file;
@@ -28,27 +31,45 @@ public class Reader {
       return true;
     }
   }
-  private void addEdgeToGraph(Graph graph, String src, String dst, String value){
+
+  private void addEdgeToGraph(Graph graph, String src, String dst, String value) {
     graph.addEdge(src, dst, Integer.parseInt(value));
     graph.addEdge(dst, src, Integer.parseInt(value));
   }
+
   public Graph readGraph(Graph graph) {
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       String currentLine;
       Set<String> uniqueCities = new LinkedHashSet<>();
+      int numberOfCities = -1;
       try {
         currentLine = reader.readLine();
         String[] split = currentLine.split("\\s+");
-        int numberOfCities = Integer.parseInt(split[0]);
+        try {
+          numberOfCities = Integer.parseInt(split[0]);
+        } catch (NumberFormatException e) {
+          logger.error("Number of cities provided in input file cannot be parsed to an integer.");
+          System.exit(1);
+        }
         graph.setNumberOfCities(numberOfCities);
         graph.setStartingCity(split[1]);
 
+        currentLine = reader.readLine();
+
         while (Objects.nonNull(currentLine)) {
           String[] splitted = currentLine.split("\\s+");
+          try {
+            Integer.parseInt(splitted[splitted.length - 1]);
+          } catch (NumberFormatException e) {
+            logger.error(
+                "Read distance between cities provided in input cannot be parsed to an integer.");
+            System.exit(1);
+          }
+
           if (splitted.length == 3) {
             uniqueCities.add(splitted[0]);
             uniqueCities.add(splitted[1]);
-            addEdgeToGraph(graph,splitted[0],splitted[1],splitted[2]);
+            addEdgeToGraph(graph, splitted[0], splitted[1], splitted[2]);
           }
           if (splitted.length > 3) {
             if (uniqueCities.contains(splitted[0])) {
@@ -58,26 +79,32 @@ public class Reader {
                       .filter(Reader::isString)
                       .collect(Collectors.joining(" "));
               uniqueCities.add(unique);
-              addEdgeToGraph(graph,splitted[0],unique,splitted[splitted.length-1]);
+              addEdgeToGraph(graph, splitted[0], unique, splitted[splitted.length - 1]);
             } else if (uniqueCities.contains(splitted[splitted.length - 2])) {
               String unique =
                   Arrays.stream(splitted)
                       .limit(splitted.length - 2)
                       .collect(Collectors.joining(" "));
               uniqueCities.add(unique);
-              addEdgeToGraph(graph,unique,splitted[splitted.length-2],splitted[splitted.length-1]);
+              addEdgeToGraph(
+                  graph, unique, splitted[splitted.length - 2], splitted[splitted.length - 1]);
             }
           }
           currentLine = reader.readLine();
         }
+
       } catch (FileNotFoundException e) {
-        System.out.println(e.getMessage());
-        return null;
+        logger.error("File was not found.");
+        System.exit(1);
+      }
+      if (uniqueCities.size() != numberOfCities) {
+        logger.error("Expected number of cities does not match cities provided from distances.");
+        System.exit(1);
       }
       graph.setCities(uniqueCities.stream().toList());
     } catch (IOException e) {
-      System.out.println(e.getMessage());
-      return null;
+      logger.fatal("IOException");
+      System.exit(1);
     }
     return graph;
   }

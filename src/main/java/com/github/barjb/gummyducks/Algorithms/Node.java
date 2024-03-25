@@ -1,6 +1,7 @@
 package com.github.barjb.gummyducks.Algorithms;
 
 import com.github.barjb.gummyducks.Graph.Matrix;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -86,12 +87,9 @@ public class Node {
   }
 
   public boolean isLeaf() {
-    for (int i = 0; i < opportunityMatrix.getSize(); i++) {
-      for (int j = 0; j < opportunityMatrix.getSize(); j++) {
-        if (opportunityMatrix.get(i, j) != Integer.MAX_VALUE) return false;
-      }
-    }
-    return true;
+    return Arrays.stream(opportunityMatrix.getMatrix())
+        .flatMapToInt(Arrays::stream)
+        .allMatch(value -> value == Integer.MAX_VALUE);
   }
 
   public void countCost() {

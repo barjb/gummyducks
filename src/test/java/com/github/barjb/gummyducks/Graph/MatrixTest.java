@@ -3,27 +3,27 @@ package com.github.barjb.gummyducks.Graph;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.LinkedList;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class MatrixTest {
 
-  private int [][] mat = {
+  private int[][] mat = {
+    {Integer.MAX_VALUE, 118, 104, 229},
+    {118, Integer.MAX_VALUE, 189, 341},
+    {104, 189, Integer.MAX_VALUE, 206},
+    {229, 341, 206, Integer.MAX_VALUE}
+  };
+
+  @BeforeEach
+  public void setMat() {
+    mat =
+        new int[][] {
           {Integer.MAX_VALUE, 118, 104, 229},
           {118, Integer.MAX_VALUE, 189, 341},
           {104, 189, Integer.MAX_VALUE, 206},
           {229, 341, 206, Integer.MAX_VALUE}
-  };
-
-  @BeforeEach
-  public void setMat(){
-    mat = new int[][]{
-      {Integer.MAX_VALUE, 118, 104, 229},
-      {118, Integer.MAX_VALUE, 189, 341},
-      {104, 189, Integer.MAX_VALUE, 206},
-      {229, 341, 206, Integer.MAX_VALUE}
-    };
+        };
   }
 
   @Test
