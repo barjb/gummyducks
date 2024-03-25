@@ -1,0 +1,7 @@
+4 Warszawa
+Warszawa Lublin 118
+Warszawa Gdańsk 229
+Warszawa Łódź 104
+Lublin Gdańsk 341
+Lublin Łódź 189
+Gdańsk Łódź 206
